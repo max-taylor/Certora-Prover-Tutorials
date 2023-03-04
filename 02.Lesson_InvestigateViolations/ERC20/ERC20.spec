@@ -12,7 +12,7 @@ rule integrityOfTransfer(address recipient, uint256 amount) {
 	uint256 balanceRecipientBefore = balanceOf(e, recipient);
 	transfer(e, recipient, amount);
 
-	assert balanceRecipientBefore + balanceSenderBefore == balanceOf(e, e.msg.sender) + balanceOf(e, recipient), "the total funds before and after a transfer should remain the constant";
+	assert balanceRecipientBefore + balanceSenderBefore == balanceOf(e, e.msg.sender) + balanceOf(e, recipient), "the total funds before and after a transfer should remain constant";
 }
 
 

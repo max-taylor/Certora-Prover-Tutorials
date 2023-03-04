@@ -1,7 +1,7 @@
 certoraRun contracts/Pool.sol contracts/Asset_ERC20.sol contracts/SymbolicFlashLoanReceiver.sol \
     --link Pool:asset=Asset_ERC20 \
 	--verify Pool:mathProperties.spec \
-    --solc solc8.0 \
+    --solc solc \
     --staging \
     --rule $1 \
     --msg "Abstract Pool, mathProperties" \

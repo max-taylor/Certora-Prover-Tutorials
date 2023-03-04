@@ -1,3 +1,8 @@
+methods {
+  getPointsOfContender(address) returns(uint256) envfree
+  hasVoted(address) returns(bool) envfree
+}
+
 // Checks that a voter's "registered" mark is changed correctly - 
 // If it's false after a function call, it was false before
 // If it's true after a function call, it either started as true or changed from false to true via registerVoter()

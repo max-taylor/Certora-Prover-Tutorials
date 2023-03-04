@@ -39,7 +39,6 @@ rule totalSupplyAfterMint(address account, uint256 amount) {
 }
 
 
-
 rule totalSupplyAfterMintWithPrecondition(address account, uint256 amount) {
 	env e; 
 	

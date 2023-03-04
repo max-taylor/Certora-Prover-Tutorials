@@ -103,13 +103,9 @@ contract ERC20 is IERC20, IERC20Metadata {
     /**
      * @dev See {IERC20-balanceOf}.
      */
-    function balanceOf(address account)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function balanceOf(
+        address account
+    ) public view virtual override returns (uint256) {
         return _balances[account];
     }
 
@@ -121,12 +117,10 @@ contract ERC20 is IERC20, IERC20Metadata {
      * - `recipient` cannot be the zero address.
      * - the caller must have a balance of at least `amount`.
      */
-    function transfer(address recipient, uint256 amount)
-        public
-        virtual
-        override
-        returns (bool)
-    {
+    function transfer(
+        address recipient,
+        uint256 amount
+    ) public virtual override returns (bool) {
         _transfer(msg.sender, recipient, amount);
         return true;
     }
@@ -134,13 +128,10 @@ contract ERC20 is IERC20, IERC20Metadata {
     /**
      * @dev See {IERC20-allowance}.
      */
-    function allowance(address owner, address spender)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function allowance(
+        address owner,
+        address spender
+    ) public view virtual override returns (uint256) {
         return _allowances[owner][spender];
     }
 
@@ -151,12 +142,10 @@ contract ERC20 is IERC20, IERC20Metadata {
      *
      * - `spender` cannot be the zero address.
      */
-    function approve(address spender, uint256 amount)
-        public
-        virtual
-        override
-        returns (bool)
-    {
+    function approve(
+        address spender,
+        uint256 amount
+    ) public virtual override returns (bool) {
         _approve(msg.sender, spender, amount);
         return true;
     }
@@ -205,11 +194,10 @@ contract ERC20 is IERC20, IERC20Metadata {
      *
      * - `spender` cannot be the zero address.
      */
-    function increaseAllowance(address spender, uint256 addedValue)
-        public
-        virtual
-        returns (bool)
-    {
+    function increaseAllowance(
+        address spender,
+        uint256 addedValue
+    ) public virtual returns (bool) {
         _approve(
             msg.sender,
             spender,
@@ -232,11 +220,10 @@ contract ERC20 is IERC20, IERC20Metadata {
      * - `spender` must have allowance for the caller of at least
      * `subtractedValue`.
      */
-    function decreaseAllowance(address spender, uint256 subtractedValue)
-        public
-        virtual
-        returns (bool)
-    {
+    function decreaseAllowance(
+        address spender,
+        uint256 subtractedValue
+    ) public virtual returns (bool) {
         uint256 currentAllowance = _allowances[msg.sender][spender];
         require(
             currentAllowance >= subtractedValue,
@@ -297,7 +284,10 @@ contract ERC20 is IERC20, IERC20Metadata {
      *
      * - `account` cannot be the zero address.
      */
-    function mint(address account, uint256 amount) onlyOwner() public virtual override {
+    function mint(
+        address account,
+        uint256 amount
+    ) public virtual override onlyOwner {
         require(account != address(0), "ERC20: mint to the zero address");
 
         _beforeTokenTransfer(address(0), account, amount);
@@ -320,7 +310,10 @@ contract ERC20 is IERC20, IERC20Metadata {
      * - `account` cannot be the zero address.
      * - `account` must have at least `amount` tokens.
      */
-    function burn(address account, uint256 amount) onlyOwner() public virtual override {
+    function burn(
+        address account,
+        uint256 amount
+    ) public virtual override onlyOwner {
         require(account != address(0), "ERC20: burn from the zero address");
 
         _beforeTokenTransfer(account, address(0), amount);
@@ -358,7 +351,6 @@ contract ERC20 is IERC20, IERC20Metadata {
         require(owner != address(0), "ERC20: approve from the zero address");
         require(spender != address(0), "ERC20: approve to the zero address");
         _allowances[owner][spender] = amount;
-        _balances[spender] = amount;
         emit Approval(owner, spender, amount);
     }
 

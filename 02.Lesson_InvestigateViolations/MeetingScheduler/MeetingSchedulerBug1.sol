@@ -3,51 +3,35 @@ pragma solidity ^0.8.7;
 import "./IMeetingScheduler.sol";
 
 contract MeetingScheduler is IMeetingScheduler {
-
     mapping(uint256 => ScheduledMeeting) private meetings;
 
-    function getStateById(uint256 meetingId)
-        external
-        view
-        override
-        returns (MeetingStatus)
-    {
+    function getStateById(
+        uint256 meetingId
+    ) external view override returns (MeetingStatus) {
         return meetings[meetingId].status;
     }
 
-    function getStartTimeById(uint256 meetingId)
-        external
-        view
-        override
-        returns (uint256 startTime)
-    {
+    function getStartTimeById(
+        uint256 meetingId
+    ) external view override returns (uint256 startTime) {
         return meetings[meetingId].startTime;
     }
 
-    function getEndTimeById(uint256 meetingId)
-        external
-        view
-        override
-        returns (uint256 endTime)
-    {
+    function getEndTimeById(
+        uint256 meetingId
+    ) external view override returns (uint256 endTime) {
         return meetings[meetingId].endTime;
     }
 
-    function getnumOfParticipants(uint256 meetingId)
-        external
-        view
-        override
-        returns (uint256 numOfParticipants)
-    {
+    function getnumOfParticipants(
+        uint256 meetingId
+    ) external view override returns (uint256 numOfParticipants) {
         return meetings[meetingId].numOfParticipants;
     }
 
-    function getOrganizer(uint256 meetingId)
-        external
-        view
-        override
-        returns (address organizer)
-    {
+    function getOrganizer(
+        uint256 meetingId
+    ) external view override returns (address organizer) {
         return meetings[meetingId].organizer;
     }
 
@@ -68,7 +52,7 @@ contract MeetingScheduler is IMeetingScheduler {
         meetings[meetingId] = ScheduledMeeting({
             startTime: startTime,
             endTime: endTime,
-            numOfParticipants: 0,
+            numOfParticipants: meetings[meetingId].numOfParticipants,
             organizer: msg.sender,
             status: MeetingStatus.PENDING
         });
@@ -84,13 +68,18 @@ contract MeetingScheduler is IMeetingScheduler {
             block.timestamp < scheduledMeeting.endTime,
             "can't start a meeting after its end time"
         );
+        require(
+            block.timestamp >= scheduledMeeting.startTime,
+            "can't start a meeting before the start time"
+        );
         meetings[meetingId].status = MeetingStatus.STARTED;
     }
 
     function cancelMeeting(uint256 meetingId) external override {
         ScheduledMeeting memory scheduledMeeting = meetings[meetingId];
-        require(msg.sender == scheduledMeeting.organizer,
-                "only the organizer of a meeting can cancel it"
+        require(
+            msg.sender == scheduledMeeting.organizer,
+            "only the organizer of a meeting can cancel it"
         );
         require(
             scheduledMeeting.status == MeetingStatus.PENDING,
