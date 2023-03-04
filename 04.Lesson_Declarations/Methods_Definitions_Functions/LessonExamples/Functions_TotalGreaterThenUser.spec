@@ -16,6 +16,8 @@ rule totalFundsAfterDeposit(uint256 amount) {
 	env e; 
 	
     bool preCall = preFunctionCall(e);
+
+    require preCall;
 	
     callDeposit(e, amount);
 

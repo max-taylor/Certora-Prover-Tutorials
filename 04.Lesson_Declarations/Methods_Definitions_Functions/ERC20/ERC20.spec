@@ -40,9 +40,9 @@ rule integrityOfTransfer(address recipient, uint256 amount) {
 rule integrityOfTransferFrom(address owner, address recipient, uint256 amount) {
 	env e;
     require owner != recipient; // why is that necessary? try commenting this line out and see what happens
-	uint256 allowanceBefore = allowance(e, owner, e.msg.sender);
+	uint256 allowanceBefore = allowance(owner, e.msg.sender);
 	transferFrom(e, owner, recipient, amount);
-	uint256 allowanceAfter = allowance(e, owner, e.msg.sender);
+	uint256 allowanceAfter = allowance(owner, e.msg.sender);
     
 	assert allowanceBefore >= allowanceAfter, "allowance musn't increase after using the allowance to pay on behalf of somebody else";
 }
@@ -51,9 +51,9 @@ rule integrityOfTransferFrom(address owner, address recipient, uint256 amount) {
 // Checks that increaseAllowance() increases allowance of spender
 rule integrityOfIncreaseAllowance(address spender, uint256 amount) {
 	env e;
-	uint256 allowanceBefore = allowance(e, e.msg.sender, spender);
+	uint256 allowanceBefore = allowance(e.msg.sender, spender);
 	increaseAllowance(e, spender, amount);
-	uint256 allowanceAfter = allowance(e, e.msg.sender, spender);
+	uint256 allowanceAfter = allowance(e.msg.sender, spender);
 
 	assert amount > 0 => (allowanceAfter > allowanceBefore), "allowance did not increase";
     // Can you think of a way to strengthen this assert to account to all possible amounts?
