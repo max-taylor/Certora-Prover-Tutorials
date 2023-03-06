@@ -1,3 +1,4 @@
 certoraRun BallGame.sol:BallGame --verify BallGame:BallGame.spec \
---solc solc8.6 \
+--solc solc \
+--send_only \
 --msg "$1"

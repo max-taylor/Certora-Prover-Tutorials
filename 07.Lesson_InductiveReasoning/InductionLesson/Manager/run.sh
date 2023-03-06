@@ -1,3 +1,4 @@
-certoraRun Manager.sol:Manager --verify Manager:ManagerSolution.spec \
---solc solc8.6 \
---msg "Manager"
+certoraRun Manager.sol:Manager --verify Manager:Manager.spec \
+--send_only \
+--solc solc \
+--msg "$1"

@@ -4,44 +4,46 @@ methods {
 		isActiveManager(address a) returns (bool) envfree
 }
 
-invariant ManagerZeroIsNotActive()
-        !isActiveManager(0)
 
 
-invariant step0_uniqueManagerAsInvariant(uint256 fundId1, uint256 fundId2) 
-	fundId1 != fundId2 => (getCurrentManager(fundId1) != getCurrentManager(fundId2) )
-
-invariant step1_uniqueManagerAsInvariant(uint256 fundId1, uint256 fundId2) 
-	fundId1 != fundId2 => (getCurrentManager(fundId1) != getCurrentManager(fundId2) ||
-	getCurrentManager(fundId1) == 0 || getCurrentManager(fundId2) == 0  )
-
-invariant step2_activeCurrentManger(uint256 fundId) 
-	getCurrentManager(fundId) != 0 => isActiveManager(getCurrentManager(fundId))
-
-invariant step3_activeCurrentManger(uint256 fundId) 
-	getCurrentManager(fundId) != 0 => isActiveManager(getCurrentManager(fundId))
-	{ 
-		preserved claimManagement(uint256 fundIdClaimed) with(env e) {
-			require fundIdClaimed == fundId;
-		}
-	}
+// invariant ManagerZeroIsNotActive()
+//         !isActiveManager(0)
 
 
-invariant step4_uniqueManagerAsInvariant(uint256 fundId1, uint256 fundId2) 
-	fundId1 != fundId2 => (getCurrentManager(fundId1) != getCurrentManager(fundId2) ||
-	getCurrentManager(fundId1) == 0 || getCurrentManager(fundId2) == 0  )
-	{ 
-		preserved {
-			requireInvariant step3_activeCurrentManger(fundId1);
-			requireInvariant step3_activeCurrentManger(fundId2);
-		}
-	}
+// invariant step0_uniqueManagerAsInvariant(uint256 fundId1, uint256 fundId2) 
+// 	fundId1 != fundId2 => (getCurrentManager(fundId1) != getCurrentManager(fundId2) )
+
+// invariant step1_uniqueManagerAsInvariant(uint256 fundId1, uint256 fundId2) 
+// 	fundId1 != fundId2 => (getCurrentManager(fundId1) != getCurrentManager(fundId2) ||
+// 	getCurrentManager(fundId1) == 0 || getCurrentManager(fundId2) == 0  )
+
+// invariant step2_activeCurrentManger(uint256 fundId) 
+// 	getCurrentManager(fundId) != 0 => isActiveManager(getCurrentManager(fundId))
+
+// invariant step3_activeCurrentManger(uint256 fundId) 
+// 	getCurrentManager(fundId) != 0 => isActiveManager(getCurrentManager(fundId))
+// 	{ 
+// 		preserved claimManagement(uint256 fundIdClaimed) with(env e) {
+// 			require fundIdClaimed == fundId;
+// 		}
+// 	}
+
+
+// invariant step4_uniqueManagerAsInvariant(uint256 fundId1, uint256 fundId2) 
+// 	fundId1 != fundId2 => (getCurrentManager(fundId1) != getCurrentManager(fundId2) ||
+// 	getCurrentManager(fundId1) == 0 || getCurrentManager(fundId2) == 0  )
+// 	{ 
+// 		preserved {
+// 			requireInvariant step3_activeCurrentManger(fundId1);
+// 			requireInvariant step3_activeCurrentManger(fundId2);
+// 		}
+// 	}
 
 
 
 rule uniqueManagerAsRule(uint256 fundId1, uint256 fundId2, method f) {
 	require fundId1 != fundId2;
-    require getCurrentManager(fundId1) != 0 => isActiveManager(getCurrentManager(fundId1));
+  require getCurrentManager(fundId1) != 0 => isActiveManager(getCurrentManager(fundId1));
 	require getCurrentManager(fundId2) != 0 => isActiveManager(getCurrentManager(fundId2));
 	require getCurrentManager(fundId1) != getCurrentManager(fundId2) ;
 				
@@ -61,7 +63,15 @@ rule uniqueManagerAsRule(uint256 fundId1, uint256 fundId2, method f) {
 	assert getCurrentManager(fundId2) != 0 => isActiveManager(getCurrentManager(fundId2)), "manager of fund2 is not active";
 }
 
-
-
-		
-	
+invariant uniqueManagerAsInvariant(uint256 fundId1, uint256 fundId2) 
+  fundId1 != fundId2 => (getCurrentManager(fundId1) != getCurrentManager(fundId2))
+  {
+    preserved with (env e) {
+      require getCurrentManager(fundId1) != 0 => isActiveManager(getCurrentManager(fundId1));
+	    require getCurrentManager(fundId2) != 0 => isActiveManager(getCurrentManager(fundId2));
+    }
+    preserved claimManagement(uint256 fundId) with (env e) {
+      require getCurrentManager(fundId1) != 0 => isActiveManager(getCurrentManager(fundId1));
+	    require getCurrentManager(fundId2) != 0 => isActiveManager(getCurrentManager(fundId2));
+    }
+  }
