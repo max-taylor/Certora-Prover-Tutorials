@@ -244,6 +244,7 @@ rule justUseGhost(method f) {
     env e;
     calldataarg args;
     f(e,args);
+    // Tautology
     assert sumBids != before => true;
 }
 

@@ -162,7 +162,7 @@ using SymbolicFlashLoanReceiver as flashLoanReceiver
 		uint256 poolBalance1 = underlying.balanceOf(currentContract);
 		uint256 supply1 = totalSupply();
         
-        uint256 shares_pre = balanceOf(user);
+    uint256 shares_pre = balanceOf(user);
 		require shares_pre <= totalSupply();
 		uint256 withdrawableAmount_pre = sharesToAmount(shares_pre);
 		uint256 userBalance_pre = underlying.balanceOf(user);
